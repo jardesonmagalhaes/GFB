@@ -3,7 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jardeson ORG - Gestão Financeira</title>
+    <title>Jardeson GFB - Gestão Financeira</title>
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#10b981"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Jardeson GFB">
+    <meta name="description" content="Seu Gerenciador de Contas de Apostas.">
+    <!-- O link para o manifest será injetado via script -->
     
     <!-- Tailwind CSS para um design moderno e responsivo -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -26,38 +34,21 @@
 
         /* Animação para a entrada de novos itens na lista */
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .fade-in {
-            animation: fadeIn 0.5s ease-out forwards;
-        }
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
         
-        /* Estilização da barra de rolagem para um visual mais limpo */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1f2937;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #4b5563;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #6b7280;
-        }
+        /* Estilização da barra de rolagem */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1f2937; }
+        ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
     </style>
 </head>
 <body class="bg-gray-900 text-white">
 
-    <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-4xl">
+    <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-5xl">
         
         <!-- Cabeçalho -->
         <header class="text-center mb-8">
@@ -68,22 +59,22 @@
         </header>
 
         <main>
-            <!-- Painel de Resumo -->
-            <section id="summary" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                <!-- Card Lucro Total -->
-                <div class="bg-gray-800 p-6 rounded-xl shadow-lg flex items-center space-x-4">
-                    <div class="bg-green-500/20 p-3 rounded-full">
-                        <i class="fa-solid fa-dollar-sign fa-2x text-green-400"></i>
+            <!-- Painel de Resumo Atualizado -->
+            <section id="summary" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <!-- Card Balanço Total (Lucro Líquido) -->
+                <div class="bg-gray-800 p-6 rounded-xl shadow-lg flex items-center space-x-4 col-span-2 md:col-span-2">
+                    <div class="bg-blue-500/20 p-3 rounded-full">
+                        <i class="fa-solid fa-scale-balanced fa-2x text-blue-400"></i>
                     </div>
                     <div>
-                        <p class="text-gray-400 text-sm">Lucro Total</p>
+                        <p class="text-gray-400 text-sm">Balanço Total</p>
                         <p id="totalProfit" class="text-2xl font-bold">R$ 0,00</p>
                     </div>
                 </div>
-                <!-- Card Total de Lançamentos -->
+                 <!-- Card Total de Lançamentos -->
                 <div class="bg-gray-800 p-6 rounded-xl shadow-lg flex items-center space-x-4">
-                    <div class="bg-blue-500/20 p-3 rounded-full">
-                        <i class="fa-solid fa-list-check fa-2x text-blue-400"></i>
+                    <div class="bg-purple-500/20 p-3 rounded-full">
+                        <i class="fa-solid fa-list-check fa-2x text-purple-400"></i>
                     </div>
                     <div>
                         <p class="text-gray-400 text-sm">Lançamentos</p>
@@ -96,8 +87,28 @@
                         <i class="fa-solid fa-chart-pie fa-2x text-yellow-400"></i>
                     </div>
                     <div>
-                        <p class="text-gray-400 text-sm">Lucro Médio</p>
+                        <p class="text-gray-400 text-sm">Média / Lanç.</p>
                         <p id="averageProfit" class="text-2xl font-bold">R$ 0,00</p>
+                    </div>
+                </div>
+                <!-- Card Total Ganhos -->
+                <div class="bg-gray-800 p-6 rounded-xl shadow-lg flex items-center space-x-4 col-span-2">
+                     <div class="bg-green-500/20 p-3 rounded-full">
+                        <i class="fa-solid fa-arrow-up fa-2x text-green-400"></i>
+                    </div>
+                    <div>
+                        <p class="text-gray-400 text-sm">Total Ganhos</p>
+                        <p id="totalGains" class="text-2xl font-bold text-green-400">R$ 0,00</p>
+                    </div>
+                </div>
+                 <!-- Card Total Perdas -->
+                <div class="bg-gray-800 p-6 rounded-xl shadow-lg flex items-center space-x-4 col-span-2">
+                     <div class="bg-red-500/20 p-3 rounded-full">
+                        <i class="fa-solid fa-arrow-down fa-2x text-red-500"></i>
+                    </div>
+                    <div>
+                        <p class="text-gray-400 text-sm">Total Perdas</p>
+                        <p id="totalLosses" class="text-2xl font-bold text-red-500">R$ 0,00</p>
                     </div>
                 </div>
             </section>
@@ -122,10 +133,10 @@
                         </select>
                     </div>
 
-                    <!-- Lucro -->
+                    <!-- Lucro/Prejuízo -->
                     <div>
-                        <label for="profit" class="block mb-2 text-sm font-medium text-gray-300">Lucro (R$)</label>
-                        <input type="number" id="profit" name="profit" step="0.01" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:ring-emerald-500 focus:border-emerald-500 transition" placeholder="Ex: 150.50" required>
+                        <label for="profit" class="block mb-2 text-sm font-medium text-gray-300">Valor (Lucro/Prejuízo R$)</label>
+                        <input type="number" id="profit" name="profit" step="0.01" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:ring-emerald-500 focus:border-emerald-500 transition" placeholder="Positivo para lucro, negativo para perda. Ex: -50.25" required>
                     </div>
                     
                     <!-- Botão de Adicionar -->
@@ -147,23 +158,12 @@
                                 <tr>
                                     <th class="p-4 font-semibold">Dono da Conta</th>
                                     <th class="p-4 font-semibold">Casa de Aposta</th>
-                                    <th class="p-4 font-semibold">Lucro</th>
+                                    <th class="p-4 font-semibold">Valor</th>
                                     <th class="p-4 font-semibold">Data e Hora</th>
                                     <th class="p-4 font-semibold text-center">Ações</th>
                                 </tr>
                             </thead>
-                            <tbody id="entriesTableBody">
-                                <!-- As linhas da tabela serão inseridas aqui via JavaScript -->
-                                <!-- Exemplo de linha vazia -->
-                                <!-- 
-                                <tr id="empty-state" class="hidden">
-                                     <td colspan="5" class="text-center text-gray-500 p-8">
-                                        <i class="fas fa-folder-open fa-3x mb-2"></i>
-                                        <p>Nenhum lançamento cadastrado ainda.</p>
-                                    </td>
-                                </tr> 
-                                -->
-                            </tbody>
+                            <tbody id="entriesTableBody"></tbody>
                         </table>
                     </div>
                  </div>
@@ -189,81 +189,113 @@
         document.addEventListener('DOMContentLoaded', () => {
             const entryForm = document.getElementById('entryForm');
             const entriesTableBody = document.getElementById('entriesTableBody');
+            
+            // Elementos do painel de resumo
             const totalProfitEl = document.getElementById('totalProfit');
             const totalEntriesEl = document.getElementById('totalEntries');
             const averageProfitEl = document.getElementById('averageProfit');
+            const totalGainsEl = document.getElementById('totalGains');
+            const totalLossesEl = document.getElementById('totalLosses');
+
+            // Elementos do modal
             const deleteModal = document.getElementById('deleteModal');
             const modalContent = document.getElementById('modal-content');
             const confirmDeleteBtn = document.getElementById('confirmDelete');
             const cancelDeleteBtn = document.getElementById('cancelDelete');
             let entryIdToDelete = null;
 
-            // Função para buscar os dados do localStorage
-            const getEntries = () => {
-                return JSON.parse(localStorage.getItem('bettingEntries')) || [];
-            };
+            // --- Lógica do PWA (Progressive Web App) ---
+            const setupPWA = () => {
+                // 1. Criar o conteúdo do manifest.json
+                const manifest = {
+                    "name": "Jardeson GFB - Gestão Financeira",
+                    "short_name": "Jardeson GFB",
+                    "description": "Seu Gerenciador de Contas de Apostas.",
+                    "start_url": ".",
+                    "display": "standalone",
+                    "background_color": "#111827",
+                    "theme_color": "#10b981",
+                    "icons": [
+                        { "src": "https://placehold.co/192x192/10b981/FFFFFF?text=JG&font=inter", "type": "image/png", "sizes": "192x192" },
+                        { "src": "https://placehold.co/512x512/10b981/FFFFFF?text=JG&font=inter", "type": "image/png", "sizes": "512x512" }
+                    ]
+                };
 
-            // Função para salvar os dados no localStorage
-            const saveEntries = (entries) => {
-                localStorage.setItem('bettingEntries', JSON.stringify(entries));
-            };
+                // 2. Injetar o link do manifest no <head> usando um Data URI
+                const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+                const manifestURL = URL.createObjectURL(manifestBlob);
+                const linkEl = document.createElement('link');
+                linkEl.rel = 'manifest';
+                linkEl.href = manifestURL;
+                document.head.appendChild(linkEl);
 
-            // Função para formatar valores como moeda brasileira (BRL)
-            const formatCurrency = (value) => {
-                return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                // 3. Registrar o Service Worker
+                if ('serviceWorker' in navigator) {
+                    const swContent = `
+                        const CACHE_NAME = 'jardeson-gfb-cache-v1';
+                        const urlsToCache = ['./'];
+                        self.addEventListener('install', event => {
+                            event.waitUntil(
+                                caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+                            );
+                        });
+                        self.addEventListener('fetch', event => {
+                            event.respondWith(
+                                caches.match(event.request).then(response => response || fetch(event.request))
+                            );
+                        });
+                    `;
+                    const swBlob = new Blob([swContent], { type: 'application/javascript' });
+                    const swURL = URL.createObjectURL(swBlob);
+                    
+                    navigator.serviceWorker.register(swURL)
+                        .then(reg => console.log('Service worker registrado com sucesso:', reg))
+                        .catch(err => console.error('Falha ao registrar service worker:', err));
+                }
             };
+            
+            // --- Lógica da Aplicação ---
+            const getEntries = () => JSON.parse(localStorage.getItem('bettingEntries')) || [];
+            const saveEntries = (entries) => localStorage.setItem('bettingEntries', JSON.stringify(entries));
+            const formatCurrency = (value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-            // Função para atualizar o painel de resumo
             const updateSummary = () => {
                 const entries = getEntries();
                 const totalProfit = entries.reduce((sum, entry) => sum + entry.profit, 0);
+                const totalGains = entries.filter(e => e.profit > 0).reduce((sum, e) => sum + e.profit, 0);
+                const totalLosses = entries.filter(e => e.profit < 0).reduce((sum, e) => sum + e.profit, 0);
                 const totalEntries = entries.length;
                 const averageProfit = totalEntries > 0 ? totalProfit / totalEntries : 0;
 
                 totalProfitEl.textContent = formatCurrency(totalProfit);
+                totalProfitEl.className = `text-2xl font-bold ${totalProfit >= 0 ? 'text-white' : 'text-red-500'}`;
                 totalEntriesEl.textContent = totalEntries;
                 averageProfitEl.textContent = formatCurrency(averageProfit);
+                totalGainsEl.textContent = formatCurrency(totalGains);
+                totalLossesEl.textContent = formatCurrency(totalLosses);
             };
 
-            // Função para renderizar as entradas na tabela
             const renderEntries = () => {
                 const entries = getEntries();
-                entriesTableBody.innerHTML = ''; // Limpa a tabela antes de renderizar
+                entriesTableBody.innerHTML = '';
 
                 if (entries.length === 0) {
-                     entriesTableBody.innerHTML = `
-                        <tr>
-                             <td colspan="5" class="text-center text-gray-500 p-8">
-                                <i class="fas fa-folder-open fa-3x mb-2"></i>
-                                <p>Nenhum lançamento cadastrado ainda.</p>
-                            </td>
-                        </tr>
-                     `;
+                     entriesTableBody.innerHTML = `<tr><td colspan="5" class="text-center text-gray-500 p-8"><i class="fas fa-folder-open fa-3x mb-2"></i><p>Nenhum lançamento cadastrado.</p></td></tr>`;
                 } else {
-                    // Ordena as entradas da mais recente para a mais antiga
-                    entries.sort((a, b) => b.id - a.id);
-
-                    entries.forEach(entry => {
+                    entries.sort((a, b) => b.id - a.id).forEach(entry => {
                         const row = document.createElement('tr');
                         row.className = 'border-b border-gray-700 hover:bg-gray-700/50 transition-colors fade-in';
                         
-                        const date = new Date(entry.date).toLocaleString('pt-BR', {
-                            day: '2-digit',
-                            month: '2-digit',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        });
+                        const date = new Date(entry.date).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                        const profitColor = entry.profit >= 0 ? 'text-green-400' : 'text-red-500';
 
                         row.innerHTML = `
                             <td class="p-4">${entry.userName}</td>
                             <td class="p-4">${entry.bettingHouse}</td>
-                            <td class="p-4 font-medium text-green-400">${formatCurrency(entry.profit)}</td>
+                            <td class="p-4 font-medium ${profitColor}">${formatCurrency(entry.profit)}</td>
                             <td class="p-4 text-gray-400">${date.replace(',', ' às')}</td>
                             <td class="p-4 text-center">
-                                <button data-id="${entry.id}" class="delete-btn text-gray-400 hover:text-red-500 transition-colors">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
+                                <button data-id="${entry.id}" class="delete-btn text-gray-400 hover:text-red-500 transition-colors"><i class="fas fa-trash-alt"></i></button>
                             </td>
                         `;
                         entriesTableBody.appendChild(row);
@@ -272,37 +304,25 @@
                 updateSummary();
             };
 
-            // Evento para adicionar uma nova entrada
             entryForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                
                 const userName = e.target.userName.value.trim();
                 const bettingHouse = e.target.bettingHouse.value;
                 const profit = parseFloat(e.target.profit.value);
 
-                if (!userName || isNaN(profit) || profit <= 0) {
+                if (!userName || isNaN(profit)) {
                     console.error("Dados inválidos");
-                    // Futuramente, podemos adicionar um alerta visual aqui
                     return;
                 }
-
-                const newEntry = {
-                    id: Date.now(), // ID único baseado no timestamp
-                    userName,
-                    bettingHouse,
-                    profit,
-                    date: new Date().toISOString()
-                };
-
+                
+                const newEntry = { id: Date.now(), userName, bettingHouse, profit, date: new Date().toISOString() };
                 const entries = getEntries();
                 entries.push(newEntry);
                 saveEntries(entries);
-
                 entryForm.reset();
                 renderEntries();
             });
 
-            // Função para mostrar/esconder o modal com animação
             const toggleModal = (show) => {
                 if (show) {
                     deleteModal.classList.remove('hidden');
@@ -320,7 +340,6 @@
                 }
             };
 
-            // Evento para abrir o modal de exclusão
             entriesTableBody.addEventListener('click', (e) => {
                 const deleteButton = e.target.closest('.delete-btn');
                 if (deleteButton) {
@@ -329,12 +348,7 @@
                 }
             });
 
-            // Evento para o botão de cancelar exclusão
-            cancelDeleteBtn.addEventListener('click', () => {
-                toggleModal(false);
-            });
-
-            // Evento para o botão de confirmar exclusão
+            cancelDeleteBtn.addEventListener('click', () => toggleModal(false));
             confirmDeleteBtn.addEventListener('click', () => {
                 if (entryIdToDelete !== null) {
                     let entries = getEntries();
@@ -345,7 +359,8 @@
                 }
             });
 
-            // Renderização inicial ao carregar a página
+            // --- Inicialização ---
+            setupPWA();
             renderEntries();
         });
     </script>
